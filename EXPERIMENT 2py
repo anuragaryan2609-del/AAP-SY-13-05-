@@ -1,0 +1,65 @@
+#Design a dynamic report generator in Python that uses decorators, class methods, and magic methods to customize and format reports. The system should allow users to define report templates and apply various formatting options dynamically.
+
+def report_decorator(func):
+    def wrapper(*args, **kwargs):
+        print("=" * 60)
+        print("        DYNAMIC REPORT GENERATOR")
+        print("=" * 60)
+        func(*args, **kwargs)
+        print("=" * 60)
+        print("        END OF REPORT")
+        print("=" * 60)
+    return wrapper
+class Report:
+    # Class Variable
+    company_name = "ABC Technologies Pvt. Ltd."
+    # Constructor (Magic Method)
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+        self.contents = []
+    # Instance Method
+    def add_content(self, text):
+        self.contents.append(text)
+    # Class Method
+    @classmethod
+    def change_company(cls, new_company):
+        cls.company_name = new_company
+    # Static Method
+    @staticmethod
+    def line():
+        print("-" * 60)
+    # Magic Method
+    def __str__(self):
+        return f"Report Title : {self.title}\nAuthor : {self.author}"
+    # Magic Method
+    def __len__(self):
+        return len(self.contents)
+    # Display Report
+    @report_decorator
+    def display_report(self):
+
+        print("Company :", Report.company_name)
+        print(self)
+        Report.line()
+        print("Report Contents:")
+        for i, item in enumerate(self.contents, start=1):
+            print(f"{i}. {item}")
+        Report.line()
+        print("Total Sections :", len(self))
+
+r1 = Report("Annual Sales Report", "Ujjwala")
+
+r1.add_content("Sales increased by 18% compared to last year.")
+r1.add_content("Customer satisfaction reached 92%.")
+r1.add_content("Profit margin improved by 12%.")
+r1.add_content("Expansion planned for next financial year.")
+
+r1.display_report()
+print("\nChanging Company Name...\n")
+Report.change_company("OpenAI Solutions Pvt. Ltd.")
+r2 = Report("Employee Performance Report", "Rahul")
+r2.add_content("Attendance : 98%")
+r2.add_content("Projects Completed : 8")
+r2.add_content("Rating : Excellent")
+r2.display_report()
